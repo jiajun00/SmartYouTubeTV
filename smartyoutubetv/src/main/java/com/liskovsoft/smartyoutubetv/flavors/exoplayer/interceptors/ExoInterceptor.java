@@ -50,6 +50,7 @@ public class ExoInterceptor extends RequestInterceptor {
      */
     private long mExitTime;
     private long mLastCall;
+    private final long mStartTime = System.currentTimeMillis();
 
     private class GenericStringResultReceiver {
         GenericStringResultReceiver() {
@@ -166,8 +167,8 @@ public class ExoInterceptor extends RequestInterceptor {
         Runnable onDone = new Runnable() {
             @Override
             public void run() {
-                // setup code in case app has restored (low memory): press back key
-                if (!playerIntent.getBooleanExtra("player_run_once", false)) { // see exoplayer.js for details
+                boolean iamNotLate = System.currentTimeMillis() - mStartTime <= 10_000;
+                if (Browser.acitivityRestored && iamNotLate) {
                     playerIntent.putExtra(PlayerActivity.BUTTON_BACK, true);
                     mActionSender.bindActions(playerIntent);
                     return;

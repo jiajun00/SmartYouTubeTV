@@ -1,7 +1,6 @@
 /* hide 'end cards' on the video */
-/* hide icons in the bottom-right corner (like back and search) */
-/*#creator-endscreen,*/
-div#legend {
+/* hide icons in the bottom-right corner (like search) */
+div#legend > div.search {
     display: none !important;
 }
 

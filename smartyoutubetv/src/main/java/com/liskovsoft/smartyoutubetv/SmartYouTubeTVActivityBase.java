@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
+import com.liskovsoft.browser.Browser;
 import com.liskovsoft.browser.Controller;
 import com.liskovsoft.browser.addons.MainBrowserActivity;
 import com.liskovsoft.browser.addons.SimpleUIController;
@@ -41,7 +42,7 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
     @Override
     protected void onCreate(Bundle icicle) {
-        setupLang();
+        // setupLang();
         setupUA();
         super.onCreate(icicle);
 
@@ -53,6 +54,27 @@ public abstract class SmartYouTubeTVActivityBase extends MainBrowserActivity {
 
         makeActivityFullscreen();
         makeActivityHorizontal();
+    }
+
+    private String getLocalizedTitle() {
+        String label = null;
+        try {
+            label = getResources().getString(
+                    getPackageManager().getActivityInfo(getComponentName(), 0).labelRes);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return label;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
+            Browser.acitivityRestored = true;
+        }
+
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private void setupUA() {
